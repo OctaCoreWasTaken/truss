@@ -7,44 +7,8 @@
           {
             "type": "command",
             "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" SessionStart",
-            "timeout": 10,
+            "timeout": 5,
             "statusMessage": "Loading truss..."
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": ".*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" PreToolUse",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": ".*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" PostToolUse",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" Stop",
-            "timeout": 10
           }
         ]
       }
