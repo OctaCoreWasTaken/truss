@@ -59,7 +59,7 @@ function loadConfig(projectRoot) {
     const parsed = parseToml(fs.readFileSync(tomlPath, 'utf8'));
     return { config: mergeWithDefaults(parsed), warning: null };
   } catch (e) {
-    return { config: { ...DEFAULTS }, warning: `malformed truss.toml — using defaults (${e.message})` };
+    return { config: mergeWithDefaults({}), warning: `malformed truss.toml — using defaults (${e.message})` };
   }
 }
 
