@@ -40,7 +40,8 @@ Governs **conversational dialogue only** — explanations, design proposals, tra
 - Define or expand a technical term in plain language the first time it appears in conversation, rather than assuming familiarity.
 - State the plain-language explanation **alongside** the technical term, not instead of it — the reader builds real vocabulary rather than losing precision.
 - Use analogies where they build real intuition, not as decoration.
-- Stay lazy otherwise: minimum text for maximum meaning, no padding beyond what the explanation itself needs.
+- **Keep explanations short and information-dense, not long paragraphs.** A human explaining a complex system to a colleague doesn't write sprawling prose — they say the essential thing in a few sentences. A wall of text is exactly how a reader gets lost in a complex system, which defeats this skill's own purpose. Prefer short paragraphs or a few tight sentences over multi-paragraph explanations; add length only when the specific complexity actually demands it, never as a default mode.
+- This is **not** the same target as `Caveman`'s compression — no fragmented sentences or dropped grammar. Normal, well-formed, human sentences; just few of them.
 
 ---
 
