@@ -1,0 +1,14 @@
+{
+  "name": "truss-dev",
+  "owner": {
+    "name": "OctaCoreWasTaken"
+  },
+  "plugins": [
+    {
+      "name": "truss",
+      "version": "0.1.0",
+      "description": "Trust layer for agentic coding",
+      "source": "./"
+    }
+  ]
+}
