@@ -4,7 +4,7 @@ const path = require('path');
 const DEFAULTS = {
   gates:   { read_before_write: true, failure_ledger: true, spec_gate: true },
   routing: { stale_threshold: 10 },
-  model:   { classifier: 'haiku', thresholds: [4, 7] },
+  model:   { coordinator: 'sonnet', thinking: 'opus', coding: 'haiku', escalation: 'opus' },
   log:     { events: true },
 };
 
