@@ -10,8 +10,10 @@ spec_gate         = true      # require approved criteria before coding
 stale_threshold = 10          # unread-change count before routing decisions to developer
 
 [model]
-classifier  = "haiku"         # model used for difficulty scoring
-thresholds  = [4, 7]          # 1-4 -> haiku, 5-7 -> sonnet, 8-10 -> opus
+coordinator = "sonnet"        # advisory: intended session model (truss can't set it)
+thinking    = "opus"          # subagent for hard planning analysis
+coding      = "haiku"         # baseline for mechanical execution
+escalation  = "opus"          # stronger tier on failure (reserved for v1)
 
 [log]
 events = true                 # append every tool call to EVENTS.log

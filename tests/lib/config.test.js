@@ -17,8 +17,10 @@ test('returns defaults when truss.toml is missing', () => {
   assert.strictEqual(config.gates.failure_ledger, true);
   assert.strictEqual(config.gates.spec_gate, true);
   assert.strictEqual(config.routing.stale_threshold, 10);
-  assert.strictEqual(config.model.classifier, 'haiku');
-  assert.deepStrictEqual(config.model.thresholds, [4, 7]);
+  assert.strictEqual(config.model.coordinator, 'sonnet');
+  assert.strictEqual(config.model.thinking, 'opus');
+  assert.strictEqual(config.model.coding, 'haiku');
+  assert.strictEqual(config.model.escalation, 'opus');
   assert.strictEqual(config.log.events, true);
   fs.rmSync(tmp, { recursive: true });
 });
@@ -51,18 +53,17 @@ test('ignores inline comments on value lines', () => {
   fs.rmSync(tmp, { recursive: true });
 });
 
-test('parses string, number, boolean, and array values', () => {
+test('parses string and number values, overriding defaults', () => {
   const tmp = makeTmp();
   fs.writeFileSync(path.join(tmp, 'truss.toml'), [
     '[model]',
-    'classifier = "sonnet"',
-    'thresholds = [3, 8]',
+    'thinking = "sonnet"',
     '[routing]',
     'stale_threshold = 5',
   ].join('\n'));
   const { config } = loadConfig(tmp);
-  assert.strictEqual(config.model.classifier, 'sonnet');
-  assert.deepStrictEqual(config.model.thresholds, [3, 8]);
+  assert.strictEqual(config.model.thinking, 'sonnet');
+  assert.strictEqual(config.model.coding, 'haiku'); // default preserved
   assert.strictEqual(config.routing.stale_threshold, 5);
   fs.rmSync(tmp, { recursive: true });
 });
