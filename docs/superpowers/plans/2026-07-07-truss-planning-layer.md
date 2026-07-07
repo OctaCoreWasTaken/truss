@@ -187,9 +187,10 @@ For **every** external library, API, framework, or unfamiliar pattern the plan r
 
 ## Steps
 
-1. **Check `RESEARCH.md` first.** If a relevant, current entry already exists, reuse it — do not re-research.
-2. **Research what's missing.** Use context7 first (resolve the library, query its docs). Fall back to WebSearch / WebFetch for anything context7 does not cover.
-3. **Record findings in `RESEARCH.md`.** Create the file if it does not exist. Append one entry per library/API/pattern:
+1. **Check `RESEARCH.md` first.** Skip anything with a relevant, current entry — do not re-research it.
+2. **Compile the research list and confirm with the user.** List every external library, API, framework, or unfamiliar pattern the plan touches that is not already covered. Show this list to the user and ask whether they want to add anything before you begin; incorporate their additions. This is a prompt-and-continue, not an approval gate.
+3. **Research each item.** Use context7 first (resolve the library, query its docs). Fall back to WebSearch / WebFetch for anything context7 does not cover.
+4. **Record findings in `RESEARCH.md`.** Create the file if it does not exist. Append one entry per library/API/pattern:
 
    ## <library / API / pattern> — YYYY-MM-DD
    Source: context7 (/org/project) | WebSearch: <query>

@@ -40,6 +40,7 @@ The core instruction is **unconditional and tied to what the plan touches**, *no
 
 - For **every** external library, API, or pattern the plan relies on, research it — regardless of how confident the model feels. There is no "am I unsure about this?" self-check, because that self-assessment is exactly the failure mode.
 - **Check `RESEARCH.md` first** for an existing relevant entry before researching anything new (avoids re-researching the same library across sessions).
+- **Compile the research list and confirm it with the developer.** Before researching, present the list of items about to be researched and invite the developer to add to it; then proceed. This puts the human at a high-leverage point (they often know a fragile dependency the model wouldn't flag) without a blocking gate — it's a prompt-and-continue, not an approval wall.
 - Research via **context7 first** (matches truss's existing CLAUDE.md convention), falling back to **WebSearch / WebFetch** for anything context7 doesn't cover.
 - **Append findings to `RESEARCH.md`.**
 
