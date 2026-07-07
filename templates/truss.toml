@@ -1,0 +1,17 @@
+# truss configuration — all fields are optional, defaults shown below
+# Edit to control truss behaviour. Delete any section to use the default.
+
+[gates]
+read_before_write = true      # block edits to files not read this session
+failure_ledger    = true      # check failure ledger before edits
+spec_gate         = true      # require approved criteria before coding
+
+[routing]
+stale_threshold = 10          # unread-change count before routing decisions to developer
+
+[model]
+classifier  = "haiku"         # model used for difficulty scoring
+thresholds  = [4, 7]          # 1-4 -> haiku, 5-7 -> sonnet, 8-10 -> opus
+
+[log]
+events = true                 # append every tool call to EVENTS.log
