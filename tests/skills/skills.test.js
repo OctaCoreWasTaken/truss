@@ -20,3 +20,7 @@ test('research skill has valid frontmatter', () => {
 test('model-routing skill has valid frontmatter', () => {
   assertValidFrontmatter(path.join(__dirname, '../../skills/model-routing/SKILL.md'));
 });
+
+test('big-brain skill has valid frontmatter', () => {
+  assertValidFrontmatter(path.join(__dirname, '../../skills/big-brain/SKILL.md'));
+});

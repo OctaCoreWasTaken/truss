@@ -64,7 +64,10 @@ Used in: <spec/plan file this informed>
 The main session is a **thin coordinator**: it manages the dialogue with the developer and holds no heavy work. Substantive work is delegated to **scoped subagents whose model is chosen by task type**. truss invents no new delegation — it assigns models to the subagent delegations the brainstorm/plan/implement workflow already produces. This is proposal.md's own caveman/Citadel finding (isolated, scoped subagents; cheapest-path routing) taken to its conclusion, and it sidesteps the session-model constraint entirely.
 
 ### Delivery
-`skills/model-routing/SKILL.md` — a static skill shipped in the truss repo (`truss:model-routing`), carrying the routing policy. Reads the model roles from `truss.toml [model]`.
+Split across two skills, based on a real-world finding (2026-07-07 dogfood test): a single skill bundling "roles reference" with "when to delegate hard analysis" under the name `model-routing` never got separately invoked once brainstorming/research were already active — skills only fire on Claude's own relevance-judgment, which doesn't automatically re-trigger for a second skill mid-flow. The judgment-based delegation trigger needs a name and description built for maximum recall at the moment a hard decision appears, not a mechanism-named skill bundled with an unrelated fixed rule.
+
+- **`skills/big-brain/SKILL.md`** (`truss:big-brain`) — the judgment-based thinking-delegation trigger, isolated into its own skill with a vivid, high-recall description (ponytail-style: explicit scenario list, "the doubt itself is the trigger").
+- **`skills/model-routing/SKILL.md`** (`truss:model-routing`) — trimmed to the `truss.toml [model]` roles reference plus the one fixed, non-judgment rule (coding subagents run on the `coding` model). No longer carries the thinking-delegation trigger.
 
 ### Roles
 | Role | Model (default) | What runs there | truss can enforce? |
@@ -78,11 +81,12 @@ The main session is a **thin coordinator**: it manages the dialogue with the dev
 
 Rationale: Haiku codes nearly as well as Opus; what separates them is *thinking depth*, which matters in brainstorming/planning, not mechanical code. So the routing axis is **shallow execution vs deep thinking**, not easy-code vs hard-code.
 
-### Thinking delegation (judgment-based only)
-During planning, when the coordinator hits a genuinely hard analytical sub-problem — evaluating approaches, stress-testing/reviewing a design, an architecture call — it delegates that reasoning to a subagent on the `thinking` model and relays the result back into the dialogue.
+### Thinking delegation (judgment-based only) — `truss:big-brain`
+During planning, when the coordinator hits a genuinely hard analytical sub-problem — evaluating approaches, stress-testing/reviewing a design, an architecture call — `truss:big-brain` delegates that reasoning to a subagent on the `thinking` model and relays the result back into the dialogue.
 
 - **Trigger is judgment-based** (the model decides in the moment). An unconditional floor was considered and **explicitly rejected** by the developer.
-- **Mitigation for under-delegation:** the skill wording is **biased toward delegating** ("when in doubt, delegate") rather than "delegate only if clearly stuck." This is a text choice, not a structural gate, so the trigger stays fully judgment-based. Documented tradeoff: judgment-based delegation leaves the door open to under-delegation, since the coordinator decides when it needs the stronger model.
+- **Mitigation for under-delegation:** the skill wording is **biased toward delegating** — "if there's even a moment of doubt, that doubt is the trigger" — rather than "delegate only if clearly stuck." This is a text choice, not a structural gate, so the trigger stays fully judgment-based. Documented tradeoff: judgment-based delegation leaves the door open to under-delegation, since the coordinator decides when it needs the stronger model.
+- **Naming as a recall mechanism:** isolating this into its own skill named for the moment it applies (`big-brain`), rather than bundling it inside a mechanism-named `model-routing` skill, is itself part of the mitigation — a skill's `description` is what Claude matches against in the moment, so a skill sharing a name with an unrelated fixed rule is less likely to surface exactly when a hard decision appears.
 
 ### Coding
 Implementation subagents that the workflow already spawns (e.g. Superpowers subagent-driven-development) run on the `coding` model. truss does not force delegation; it governs the model of delegations that already happen.
