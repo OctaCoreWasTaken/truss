@@ -1,0 +1,11 @@
+{
+  "name": "truss",
+  "version": "0.1.0",
+  "description": "Trust layer for agentic coding",
+  "hooks": {
+    "SessionStart": { "command": "node hooks/dispatch.js SessionStart" },
+    "PreToolUse":   { "command": "node hooks/dispatch.js PreToolUse" },
+    "PostToolUse":  { "command": "node hooks/dispatch.js PostToolUse" },
+    "Stop":         { "command": "node hooks/dispatch.js Stop" }
+  }
+}

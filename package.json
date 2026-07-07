@@ -1,0 +1,12 @@
+{
+  "name": "truss",
+  "version": "0.1.0",
+  "description": "Trust layer for agentic coding",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test --recursive tests/",
+    "dev-install": "node scripts/dev-install.js",
+    "dev-uninstall": "node scripts/dev-uninstall.js"
+  },
+  "engines": { "node": ">=18" }
+}
