@@ -42,6 +42,15 @@ test('overrides specific values while keeping defaults for the rest', () => {
   fs.rmSync(tmp, { recursive: true });
 });
 
+test('ignores inline comments on value lines', () => {
+  const tmp = makeTmp();
+  fs.writeFileSync(path.join(tmp, 'truss.toml'), '[log]\nevents = true      # this is a comment\n');
+  const { config, warning } = loadConfig(tmp);
+  assert.strictEqual(warning, null);
+  assert.strictEqual(config.log.events, true); // must be boolean true, not a truthy string
+  fs.rmSync(tmp, { recursive: true });
+});
+
 test('parses string, number, boolean, and array values', () => {
   const tmp = makeTmp();
   fs.writeFileSync(path.join(tmp, 'truss.toml'), [

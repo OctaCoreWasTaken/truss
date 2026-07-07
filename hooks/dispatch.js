@@ -15,8 +15,14 @@ function runHandlers(event, input, hooksDir = __dirname) {
   const contexts = [];
 
   for (const file of files) {
-    const handler = require(path.join(dir, file));
-    const result = handler(input);
+    let result;
+    try {
+      const handler = require(path.join(dir, file));
+      result = handler(input);
+    } catch (e) {
+      process.stderr.write(`[truss] handler error in ${file}: ${e.message}\n`);
+      continue;
+    }
     if (result && result.block) return result;
     if (result && result.additionalContext) contexts.push(result.additionalContext);
   }

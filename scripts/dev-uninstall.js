@@ -13,10 +13,18 @@ function uninstall({
   installedPluginsPath = REAL_INSTALLED_PLUGINS_PATH,
   settingsPath = REAL_SETTINGS_PATH,
 } = {}) {
-  // 1. Remove symlink
-  if (fs.existsSync(pluginCacheDir) && fs.lstatSync(pluginCacheDir).isSymbolicLink()) {
-    fs.unlinkSync(pluginCacheDir);
-    console.log(`Removed symlink: ${pluginCacheDir}`);
+  // 1. Remove symlink (handles broken symlinks too)
+  try {
+    const stat = fs.lstatSync(pluginCacheDir);
+    if (stat.isSymbolicLink()) {
+      fs.unlinkSync(pluginCacheDir);
+      console.log(`Removed symlink: ${pluginCacheDir}`);
+    } else {
+      console.warn(`Warning: ${pluginCacheDir} is not a symlink, skipping`);
+    }
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
+    // path doesn't exist — nothing to remove
   }
 
   // 2. installed_plugins.json

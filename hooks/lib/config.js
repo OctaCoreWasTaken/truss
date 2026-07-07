@@ -36,7 +36,7 @@ function parseToml(content) {
     if (!trimmed.includes('=')) throw new Error(`Invalid line: ${trimmed}`);
     const eqIdx = trimmed.indexOf('=');
     const key = trimmed.slice(0, eqIdx).trim();
-    const rawVal = trimmed.slice(eqIdx + 1).trim();
+    const rawVal = trimmed.slice(eqIdx + 1).trim().replace(/#.*$/, '').trim();
     if (!key.match(/^\w+$/)) throw new Error(`Invalid key: ${key}`);
     if (section === null) throw new Error('Key-value pair before any section');
     result[section][key] = parseValue(rawVal);
@@ -54,7 +54,7 @@ function mergeWithDefaults(parsed) {
 
 function loadConfig(projectRoot) {
   const tomlPath = path.join(projectRoot, 'truss.toml');
-  if (!fs.existsSync(tomlPath)) return { config: { ...DEFAULTS }, warning: null };
+  if (!fs.existsSync(tomlPath)) return { config: mergeWithDefaults({}), warning: null };
   try {
     const parsed = parseToml(fs.readFileSync(tomlPath, 'utf8'));
     return { config: mergeWithDefaults(parsed), warning: null };

@@ -3,7 +3,10 @@ const assert = require('node:assert');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const { runHandlers, eventToDir } = require('../hooks/dispatch');
+
+const DISPATCH = path.join(__dirname, '../hooks/dispatch.js');
 
 function makeTmp() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'truss-test-'));
@@ -73,4 +76,23 @@ test('passes input payload to each handler', () => {
   const result = runHandlers('PreToolUse', { tool_name: 'Edit' }, tmp);
   assert.strictEqual(result.additionalContext, 'Edit');
   fs.rmSync(tmp, { recursive: true });
+});
+
+test('CLI exits 0 with no output when no handlers match', () => {
+  const result = spawnSync(process.execPath, [DISPATCH, 'Stop'], {
+    input: '{}',
+    encoding: 'utf8',
+  });
+  assert.strictEqual(result.status, 0);
+  assert.strictEqual(result.stdout.trim(), '');
+  assert.strictEqual(result.stderr, '');
+});
+
+test('CLI exits 0 with no output for PreToolUse (no handlers yet)', () => {
+  const result = spawnSync(process.execPath, [DISPATCH, 'PreToolUse'], {
+    input: JSON.stringify({ tool_name: 'Read', tool_input: { file_path: 'foo.js' } }),
+    encoding: 'utf8',
+  });
+  assert.strictEqual(result.status, 0);
+  assert.strictEqual(result.stdout.trim(), '');
 });
