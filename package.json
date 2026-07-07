@@ -4,7 +4,7 @@
   "description": "Trust layer for agentic coding",
   "type": "commonjs",
   "scripts": {
-    "test": "node --test --recursive tests/",
+    "test": "node --test $(find tests -name '*.test.js')",
     "dev-install": "node scripts/dev-install.js",
     "dev-uninstall": "node scripts/dev-uninstall.js"
   },
