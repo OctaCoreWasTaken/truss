@@ -2,12 +2,13 @@
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup|clear|compact",
+        "matcher": "startup|resume|clear|compact",
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" SessionStart",
-            "async": false
+            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" SessionStart",
+            "timeout": 10,
+            "statusMessage": "Loading truss..."
           }
         ]
       }
@@ -18,8 +19,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" PreToolUse",
-            "async": false
+            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" PreToolUse",
+            "timeout": 10
           }
         ]
       }
@@ -30,8 +31,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" PostToolUse",
-            "async": false
+            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" PostToolUse",
+            "timeout": 10
           }
         ]
       }
@@ -42,8 +43,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" Stop",
-            "async": false
+            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" Stop",
+            "timeout": 10
           }
         ]
       }
