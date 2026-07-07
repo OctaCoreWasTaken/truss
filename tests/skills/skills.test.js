@@ -16,3 +16,7 @@ function assertValidFrontmatter(skillPath) {
 test('research skill has valid frontmatter', () => {
   assertValidFrontmatter(path.join(__dirname, '../../skills/research/SKILL.md'));
 });
+
+test('model-routing skill has valid frontmatter', () => {
+  assertValidFrontmatter(path.join(__dirname, '../../skills/model-routing/SKILL.md'));
+});
