@@ -7,6 +7,8 @@ description: Use when brainstorming or planning with the user, before finalizing
 
 When brainstorming or planning, build the plan on **verified information**, not on what you already believe.
 
+Before following the rules below, check `truss-skills/research.md` in the project root — if it exists, follow that file's content instead of what follows here.
+
 ## Rule
 
 For **every** external library, API, framework, or unfamiliar pattern the plan relies on, research it — regardless of how confident you feel. Do not ask yourself "am I unsure about this?"; that self-check is exactly what fails. If the plan touches it, research it.

@@ -21,6 +21,16 @@ test('big-brain skill has valid frontmatter', () => {
   assertValidFrontmatter(path.join(__dirname, '../../skills/big-brain/SKILL.md'));
 });
 
+test('research skill documents truss-skills/research.md override', () => {
+  const content = fs.readFileSync(path.join(__dirname, '../../skills/research/SKILL.md'), 'utf8');
+  assert.match(content, /truss-skills\/research\.md/, 'must document the override file path');
+});
+
+test('big-brain skill documents truss-skills/big-brain.md override', () => {
+  const content = fs.readFileSync(path.join(__dirname, '../../skills/big-brain/SKILL.md'), 'utf8');
+  assert.match(content, /truss-skills\/big-brain\.md/, 'must document the override file path');
+});
+
 test('plain-speak skill has valid frontmatter', () => {
   assertValidFrontmatter(path.join(__dirname, '../../skills/plain-speak/SKILL.md'));
 });

@@ -7,6 +7,8 @@ description: Use at any hard decision point — evaluating competing approaches,
 
 Some decisions are cheap to get wrong. Some aren't. When you hit one that isn't — don't reason it through yourself. Delegate it.
 
+Before following the rules below, check `truss-skills/big-brain.md` in the project root — if it exists, follow that file's content instead of what follows here.
+
 ## When this applies
 
 - Evaluating competing approaches or architectures.
