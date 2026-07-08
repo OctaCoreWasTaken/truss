@@ -1,6 +1,6 @@
 ---
 name: research
-description: Use when brainstorming or planning with the user, before finalizing any plan or spec. Researches the external libraries, APIs, and patterns the plan relies on and records the findings, so plans rest on verified facts instead of assumptions.
+description: Use when brainstorming or planning with the user, before finalizing any plan or spec — and also in plain conversation whenever the user names an unfamiliar library/API, asks what the current best/frontier method for something is, or you're about to state a frontier/SOTA claim from memory. Researches the external libraries, APIs, algorithms, and techniques relied on and records findings (when planning) or just answers with sources (in conversation), so answers rest on verified facts and known prior art instead of assumptions, stale memory, or reinvented wheels.
 ---
 
 # Research
@@ -11,20 +11,53 @@ Before following the rules below, check `truss-skills/research.md` in the projec
 
 ## Rule
 
-For **every** external library, API, framework, or unfamiliar pattern the plan relies on, research it — regardless of how confident you feel. Do not ask yourself "am I unsure about this?"; that self-check is exactly what fails. If the plan touches it, research it.
+For **every** bit of information, whether it is a framework, API, library, algorithm, or technique, research properly to ensure the information you use is correct — regardless of how confident you feel. Do not ask yourself "am I unsure about this?"; that self-check is exactly what fails. If the plan touches it, research it.
+
+When the plan involves designing an algorithm or approach (not just calling a library), also do a **prior-art check**: search for existing documented methods that solve the same problem before designing a new one. Record methods considered and rejected, with why — not just the one chosen. Goal is to avoid rediscovering or reinventing what is already published.
+
+Prefer primary sources: papers (arXiv etc.), official docs/specs, standards bodies. Treat blogs/forums as secondary — usable, but noted as lower-confidence in the entry.
+
+Lazy-developer framing: finding a documented answer is cheaper than deriving one from memory. Search first, invent second — same instinct as reuse-over-build, applied to knowledge instead of code.
+
+## Casual conversation (not brainstorming/planning)
+
+Full ritual below is for plans/specs. In plain chat, lighter version:
+
+- User asks "what's the current best way to do X" / names unfamiliar lib or API / you're about to assert a frontier or SOTA claim → search (context7 for libs/APIs, WebSearch/WebFetch for algorithms/frontier work) before answering.
+- Cite what you found, answer directly. No user confirm-list step — that ceremony is for plans, not one-off questions.
+- Still log it (see step 4) if the finding could matter to a future decision. Skip logging only for trivial lookups (e.g. "what's the current npm version") with no forward value.
+- If the conversation turns into a plan the user wants to act on, switch to the full Steps below.
+- Skip this whole thing for routine debugging/local-code questions — no search value there.
 
 ## Steps
 
 1. **Check `RESEARCH.md` first.** Skip anything with a relevant, current entry — do not re-research it.
-2. **Compile the research list and confirm with the user.** List every external library, API, framework, or unfamiliar pattern the plan touches that is not already covered. Show this list to the user and ask whether they want to add anything before you begin; incorporate their additions. This is a prompt-and-continue, not an approval gate.
-3. **Research each item.** Use context7 first (resolve the library, query its docs). Fall back to WebSearch / WebFetch for anything context7 does not cover.
-4. **Record findings in `RESEARCH.md`.** Create the file if it does not exist. Append one entry per item:
+2. **Compile the research list and confirm with the user.** List every external library, API, framework, algorithm, or unfamiliar pattern the plan touches that is not already covered. Show this list to the user and ask whether they want to add anything before you begin; incorporate their additions. This is a prompt-and-continue, not an approval gate. (Casual conversation skips this step — see above.)
+3. **Research each item, routed by kind:**
+   - **Library/API/framework docs** → context7 first (resolve the library, query its docs). Fall back to WebSearch / WebFetch for anything context7 does not cover.
+   - **Algorithm/technique/prior-art** → context7 will not have this. Go straight to WebSearch/WebFetch for papers, surveys, and reference implementations. Look specifically for existing solutions to the same problem, not just background theory.
+4. **Record findings in `RESEARCH.md`, sorted into two sections.** Create the file if it does not exist, with both headers:
 
-   ## <library / API / pattern> — YYYY-MM-DD
-   Source: context7 (/org/project) | WebSearch: <query>
+   ```
+   # Verified
+   # Avoid
+   ```
+
+   Append entries under the matching header — never overwrite an existing entry.
+
+   **`# Verified`** — usable, sourced, goes into plans/code:
+
+   ## <library / API / algorithm / pattern> — YYYY-MM-DD
+   Source: context7 (/org/project) | WebSearch: <query> | Paper: <citation/link>
+   Source confidence: primary (paper/official doc/spec) | secondary (blog/forum)
    Findings: <what was verified, in plain language>
-   Used in: <the spec/plan file this informed>
+   Used in: <the spec/plan file this informed, or "casual — <topic>" if outside a plan>
 
-   Append only — never overwrite an existing entry.
+   **`# Avoid`** — tried, considered, or found broken; kept so it isn't retried:
 
-Fold the verified facts into the plan as you build it.
+   ## <library / API / algorithm / pattern> — YYYY-MM-DD
+   Source: context7 (/org/project) | WebSearch: <query> | Paper: <citation/link>
+   Why avoid: <deprecated, doesn't work, wrong fit, superseded by X, etc.>
+   Found while researching: <the item/plan this came up during>
+
+Fold the verified facts into the plan as you build it. Check `# Avoid` before proposing an approach — don't re-suggest something already ruled out.
