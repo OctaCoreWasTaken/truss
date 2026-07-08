@@ -40,3 +40,20 @@ test('strips frontmatter from additionalContext', () => {
   assert.ok(!result.additionalContext.includes('description:'));
   fs.rmSync(tmp, { recursive: true });
 });
+
+function writeOverride(projectRoot, content) {
+  const dir = path.join(projectRoot, 'truss-skills');
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'plain-speak.md'), content);
+}
+
+test('uses truss-skills/plain-speak.md override when present, instead of the shipped SKILL.md', () => {
+  const tmp = makeTmp();
+  const pluginRoot = makePluginRoot(tmp, FIXTURE);
+  writeOverride(tmp, 'Custom override body.\n');
+
+  const result = teach({}, tmp, pluginRoot);
+
+  assert.strictEqual(result.additionalContext, 'Custom override body.');
+  fs.rmSync(tmp, { recursive: true });
+});
