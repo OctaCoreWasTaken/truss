@@ -30,20 +30,24 @@ function runHandlers(event, input, hooksDir = __dirname) {
   return contexts.length > 0 ? { additionalContext: contexts.join('\n\n') } : null;
 }
 
+function formatOutput(result) {
+  if (result && result.block) {
+    return { stdout: JSON.stringify({ decision: 'block', reason: result.message }) + '\n', exitCode: 0 };
+  }
+  if (result && result.additionalContext) {
+    return { stdout: JSON.stringify({ additionalContext: result.additionalContext }) + '\n', exitCode: 0 };
+  }
+  return { stdout: '', exitCode: 0 };
+}
+
 if (require.main === module) {
   const event = process.argv[2];
   const raw = fs.readFileSync(0, 'utf8');
   const input = JSON.parse(raw || '{}');
   const result = runHandlers(event, input);
-
-  if (result && result.block) {
-    process.stdout.write(JSON.stringify({ decision: 'block', reason: result.message }) + '\n');
-    process.exit(2);
-  }
-  if (result && result.additionalContext) {
-    process.stdout.write(JSON.stringify({ additionalContext: result.additionalContext }) + '\n');
-  }
-  process.exit(0);
+  const { stdout, exitCode } = formatOutput(result);
+  if (stdout) process.stdout.write(stdout);
+  process.exit(exitCode);
 }
 
-module.exports = { runHandlers, eventToDir };
+module.exports = { runHandlers, eventToDir, formatOutput };

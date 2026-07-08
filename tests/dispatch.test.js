@@ -4,7 +4,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
-const { runHandlers, eventToDir } = require('../hooks/dispatch');
+const { runHandlers, eventToDir, formatOutput } = require('../hooks/dispatch');
 
 const DISPATCH = path.join(__dirname, '../hooks/dispatch.js');
 
@@ -76,6 +76,24 @@ test('passes input payload to each handler', () => {
   const result = runHandlers('PreToolUse', { tool_name: 'Edit' }, tmp);
   assert.strictEqual(result.additionalContext, 'Edit');
   fs.rmSync(tmp, { recursive: true });
+});
+
+test('formatOutput returns exit 0 with block JSON on stdout', () => {
+  const result = formatOutput({ block: true, message: 'blocked reason' });
+  assert.strictEqual(result.exitCode, 0);
+  assert.strictEqual(result.stdout, JSON.stringify({ decision: 'block', reason: 'blocked reason' }) + '\n');
+});
+
+test('formatOutput returns exit 0 with additionalContext JSON on stdout', () => {
+  const result = formatOutput({ additionalContext: 'some context' });
+  assert.strictEqual(result.exitCode, 0);
+  assert.strictEqual(result.stdout, JSON.stringify({ additionalContext: 'some context' }) + '\n');
+});
+
+test('formatOutput returns exit 0 with empty stdout for null result', () => {
+  const result = formatOutput(null);
+  assert.strictEqual(result.exitCode, 0);
+  assert.strictEqual(result.stdout, '');
 });
 
 test('CLI exits 0 with no output when no handlers match', () => {
