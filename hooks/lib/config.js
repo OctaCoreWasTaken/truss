@@ -4,7 +4,7 @@ const path = require('path');
 const DEFAULTS = {
   gates:   { failure_ledger: true, auto_compact: true },
   model:   { coordinator: 'sonnet', thinking: 'opus', coding: 'haiku', escalation: 'opus' },
-  log:     { events: true },
+  log:     { events: true, decisions: true },
   context: { context_max: 200000, threshold: 0.6 },
 };
 

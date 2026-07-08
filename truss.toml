@@ -16,4 +16,5 @@ coding      = "haiku"         # baseline for mechanical execution
 escalation  = "opus"          # stronger tier on failure (reserved for v1)
 
 [log]
-events = true                 # append every tool call to EVENTS.log
+events    = true              # append every tool call to EVENTS.log
+decisions = true              # append big-brain delegations and report decisions to DECISIONS.log
