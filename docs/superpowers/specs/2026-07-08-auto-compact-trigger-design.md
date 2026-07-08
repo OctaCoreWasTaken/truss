@@ -7,7 +7,7 @@
 
 ## Overview
 
-Motivation: Claude Code's native auto-compact fires at ~95% context capacity — past the point where retrieval accuracy and reasoning depth have already degraded (context rot). Manual `/compact` earlier produces better summaries, but requires the user to notice and act. This is a user-originated proposal, refined through brainstorming to fit truss's existing architecture and to correct two premises that didn't hold up under research: the trigger mechanism needed to be deterministic rather than instruction-based (the same lesson already learned building `plain-speak`), and the context-window assumption needed to be configurable rather than hardcoded (this project's actual window is 1M tokens, not the commonly-assumed 200K).
+Motivation: Claude Code's native auto-compact fires at ~95% context capacity — past the point where retrieval accuracy and reasoning depth have already degraded (context rot). Manual `/compact` earlier produces better summaries, but requires the user to notice and act. This is a user-originated proposal, refined through brainstorming to fit truss's existing architecture and to correct three premises that didn't hold up under research: the trigger mechanism needed to be deterministic rather than instruction-based (the same lesson already learned building `plain-speak`), the context-window assumption needed to be configurable rather than hardcoded (this project's actual window is 1M tokens, not the commonly-assumed 200K), and the estimation method itself is more accurate using the transcript's real reported token usage than a char-based approximation (see `RESEARCH.md`).
 
 ## Prerequisite: fix `dispatch.js`'s block-emission bug
 
@@ -19,9 +19,9 @@ New file: `hooks/user-prompt-submit/auto-compact.js`. Registered in `hooks/hooks
 
 On each prompt submission:
 1. Read `transcript_path` from the hook's JSON input.
-2. Parse the transcript JSONL, sum the character length of all text content blocks.
-3. Divide by 4 for an estimated token count (char-based approximation, ~80-90% accurate per the original proposal's own research).
-4. If `estimate >= context_max * threshold`, return `{block: true, message: "..."}`. Otherwise return `null` (silent, zero overhead on normal turns).
+2. Parse the transcript JSONL (one JSON object per line), scan from the end for the most recent line with `type: "assistant"` and a `message.usage` field.
+3. Sum `usage.input_tokens + usage.cache_read_input_tokens + usage.cache_creation_input_tokens` — the real, API-reported token count for that turn (not a char-based approximation; see `RESEARCH.md`). This already reflects the true context sent to the model, including system prompt, skill descriptions, and MCP tool schemas the original char/4 approach couldn't see.
+4. If `usage_total >= context_max * threshold`, return `{block: true, message: "..."}`. Otherwise return `null` (silent, zero overhead on normal turns). If no assistant turn with `usage` exists yet (e.g. very first prompt of a session), return `null` — nothing to estimate from.
 
 The block reason is shown to the **user**, not injected into Claude's context — confirmed via Claude Code's hook documentation (`reason` is user-facing only; `additionalContext` is what reaches Claude, and it's only appended when *not* blocked). This means the flow is: prompt rejected with a visible reason → user runs `/compact` → user resubmits. This was chosen deliberately over a soft `additionalContext` instruction after the same soft-compliance failure mode was already observed this session with `plain-speak`'s pre-hook-forced version — a trigger Claude can read and ignore under task pressure defeats the point of firing before the user notices on their own.
 
@@ -42,9 +42,11 @@ Two values rather than one baked-in absolute token count, specifically because c
 
 ## Known limitations (carried forward, still accurate)
 
-1. **Estimation drift** — char-based counting doesn't see system prompt, CLAUDE.md, MCP tool schemas, or skill descriptions (~50-70K tokens of fixed overhead in a typical multi-plugin session). At this project's actual 1M-token window, that's roughly 5-7% of the budget — meaningfully less severe than it would be at a 200K window (~25-35%), but not zero. Treat the threshold as a soft trigger zone, not an exact cutoff.
-2. **No mid-task interrupt** — the hook only fires on the next prompt submission, so a single very long tool-call chain can blow past the threshold before the hook gets a chance to act. Matches the existing guidance to never compact mid-task anyway.
-3. **The block only reaches the human** — Claude never sees the blocked prompt or the reason (per the hook contract). The user must notice the rejection and manually run `/compact`; this converts "remember to check the status line yourself" into "can't proceed until you act," which is a real improvement, but it is not fully automatic.
+1. **No mid-task interrupt** — the hook only fires on the next prompt submission, so a single very long tool-call chain can blow past the threshold before the hook gets a chance to act. Matches the existing guidance to never compact mid-task anyway.
+2. **The block only reaches the human** — Claude never sees the blocked prompt or the reason (per the hook contract). The user must notice the rejection and manually run `/compact`; this converts "remember to check the status line yourself" into "can't proceed until you act," which is a real improvement, but it is not fully automatic.
+3. **The usage snapshot is one turn stale** — `message.usage` on the most recent assistant line reflects context as of that turn, not including whatever the user's current prompt itself adds. For a normal-sized prompt this is negligible against a 200K-1M budget; not worth compensating for.
+
+(The original "estimation drift" limitation — char-based counting missing system prompt/skill/MCP overhead — no longer applies: using the transcript's real `message.usage` fields instead of char/4 approximation resolves it directly. See `RESEARCH.md`.)
 
 ## Testing
 
