@@ -13,10 +13,7 @@ test('returns defaults when truss.toml is missing', () => {
   const tmp = makeTmp();
   const { config, warning } = loadConfig(tmp);
   assert.strictEqual(warning, null);
-  assert.strictEqual(config.gates.read_before_write, true);
   assert.strictEqual(config.gates.failure_ledger, true);
-  assert.strictEqual(config.gates.spec_gate, true);
-  assert.strictEqual(config.routing.stale_threshold, 10);
   assert.strictEqual(config.model.coordinator, 'sonnet');
   assert.strictEqual(config.model.thinking, 'opus');
   assert.strictEqual(config.model.coding, 'haiku');
@@ -30,19 +27,19 @@ test('returns defaults when truss.toml is missing', () => {
 
 test('returns warning and defaults when truss.toml has invalid section header', () => {
   const tmp = makeTmp();
-  fs.writeFileSync(path.join(tmp, 'truss.toml'), '[gates\nread_before_write = false\n');
+  fs.writeFileSync(path.join(tmp, 'truss.toml'), '[gates\nauto_compact = false\n');
   const { config, warning } = loadConfig(tmp);
   assert.match(warning, /malformed truss\.toml/);
-  assert.strictEqual(config.gates.read_before_write, true); // default preserved
+  assert.strictEqual(config.gates.auto_compact, true); // default preserved
   fs.rmSync(tmp, { recursive: true });
 });
 
 test('overrides specific values while keeping defaults for the rest', () => {
   const tmp = makeTmp();
-  fs.writeFileSync(path.join(tmp, 'truss.toml'), '[gates]\nread_before_write = false\n');
+  fs.writeFileSync(path.join(tmp, 'truss.toml'), '[gates]\nauto_compact = false\n');
   const { config, warning } = loadConfig(tmp);
   assert.strictEqual(warning, null);
-  assert.strictEqual(config.gates.read_before_write, false);
+  assert.strictEqual(config.gates.auto_compact, false);
   assert.strictEqual(config.gates.failure_ledger, true); // default preserved
   fs.rmSync(tmp, { recursive: true });
 });
@@ -61,12 +58,12 @@ test('parses string and number values, overriding defaults', () => {
   fs.writeFileSync(path.join(tmp, 'truss.toml'), [
     '[model]',
     'thinking = "sonnet"',
-    '[routing]',
-    'stale_threshold = 5',
+    '[context]',
+    'context_max = 500000',
   ].join('\n'));
   const { config } = loadConfig(tmp);
   assert.strictEqual(config.model.thinking, 'sonnet');
   assert.strictEqual(config.model.coding, 'haiku'); // default preserved
-  assert.strictEqual(config.routing.stale_threshold, 5);
+  assert.strictEqual(config.context.context_max, 500000);
   fs.rmSync(tmp, { recursive: true });
 });

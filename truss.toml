@@ -2,13 +2,8 @@
 # Edit to control truss behaviour. Delete any section to use the default.
 
 [gates]
-read_before_write = true      # block edits to files not read this session
 failure_ledger    = true      # check failure ledger before edits
-spec_gate         = true      # require approved criteria before coding
 auto_compact      = true      # block prompts once context usage crosses [context] threshold
-
-[routing]
-stale_threshold = 10          # unread-change count before routing decisions to developer
 
 [context]
 context_max = 1000000         # this session's total context window (tokens)
