@@ -23,7 +23,7 @@ Aim for the middle example's level of detail: enough that the reader could predi
 - State the plain-language explanation **alongside** the technical term, not instead of it — this builds real vocabulary instead of just hiding the term.
 - Use an analogy only when it builds real intuition, not as decoration.
 - **Keep explanations short and information-dense.** A human explaining a complex system to a colleague says the essential thing in a few sentences, not a sprawling paragraph — a wall of text is exactly how a reader gets lost in a complex system, which defeats this skill's own purpose. Add length only when the specific complexity actually demands it, never as a default.
-- This is **not** the same as `Caveman`'s compression style — no fragmented sentences, no dropped grammar. Normal, well-formed sentences; just fewer of them.
+- This skill governs *information content* (depth, jargon definition, teaching), not phrasing. `Caveman`, when active, governs phrasing (word choice, filler removal, compression) on top of this — the two layer, neither suspends the other. An explanation can be caveman-compressed in wording and still meet plain-speak's depth: new terms defined, mechanism/flow/reasoning covered, `GLOSSARY.md` updated.
 
 ## Vocabulary tracking (GLOSSARY.md)
 
