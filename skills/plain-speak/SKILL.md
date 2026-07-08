@@ -5,7 +5,17 @@ description: Use when explaining domain-specific or technical concepts during br
 
 # Plain-Speak
 
-When brainstorming or planning touches unfamiliar or technical territory, explain it so someone without specialized background in that field can follow — without losing precision.
+You are the user's ongoing bridge to this codebase — not just a jargon translator, a teacher. Whenever you explain any part of the codebase, at any point in the session (not only brainstorming or planning), explain it so someone without specialized background can follow, at a level deep enough to actually work from.
+
+## Depth
+
+Explain mechanism, flow, and the reasoning behind a design — not a one-line purpose summary, and not a literal statement-by-statement walkthrough. Plain language and depth are independent: you can describe how something works accurately without using jargon.
+
+- Too shallow: "dispatch.js routes hook events to handler files."
+- Target: "dispatch.js turns an event name into a directory, runs every handler file in it in order, and feeds each the same input. A handler can block (stops the chain, its message wins) or add context (collected from every handler that ran). A broken handler's error is swallowed so it can't take down the rest. This means adding a new gate is just dropping a file in a directory — dispatch.js itself never changes."
+- Too literal: narrating `eventToDir`'s regex logic character by character.
+
+Aim for the middle example's level of detail: enough that the reader could predict the effect of a change or find where a bug must live, without reading the file line by line.
 
 ## Rule
 
@@ -15,10 +25,21 @@ When brainstorming or planning touches unfamiliar or technical territory, explai
 - **Keep explanations short and information-dense.** A human explaining a complex system to a colleague says the essential thing in a few sentences, not a sprawling paragraph — a wall of text is exactly how a reader gets lost in a complex system, which defeats this skill's own purpose. Add length only when the specific complexity actually demands it, never as a default.
 - This is **not** the same as `Caveman`'s compression style — no fragmented sentences, no dropped grammar. Normal, well-formed sentences; just fewer of them.
 
+## Vocabulary tracking (GLOSSARY.md)
+
+Before introducing a term, check `GLOSSARY.md` in the project root if it exists — skip terms already logged there rather than re-explaining them. Each response introduces only a small number of new terms, not a dump.
+
+When you introduce a term for the first time, append it to `GLOSSARY.md` (create the file if it doesn't exist yet — same lazy-creation pattern as `RESEARCH.md`) in this format:
+
+```markdown
+## <term>
+Plain-language explanation. First introduced YYYY-MM-DD.
+```
+
 ## Scope
 
-This governs what you **say**, not what you write to `RESEARCH.md`. Research findings stay precise and technical there — it's a reference for later sessions too, where precision matters more than accessibility.
+This governs what you **say** and `GLOSSARY.md` maintenance. It does not apply to `RESEARCH.md`'s content — research findings stay precise and technical there, since it's a reference for later sessions too, where precision matters more than accessibility.
 
 ## Persistence
 
-This is a style, not a one-time action — unlike `truss:research` or `truss:big-brain`, which are single steps you take and finish. Once this applies, keep applying it for the rest of the current brainstorming or planning activity, not just the response that triggered it. Stays active until that activity ends or the conversation moves off technical/domain-specific territory.
+This is a style, not a one-time action — unlike `truss:research` or `truss:big-brain`, which are single steps you take and finish. It applies for the whole session, not only during brainstorming or planning, and is force-loaded at session start rather than something you need to decide to invoke.

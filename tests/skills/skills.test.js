@@ -28,3 +28,9 @@ test('big-brain skill has valid frontmatter', () => {
 test('plain-speak skill has valid frontmatter', () => {
   assertValidFrontmatter(path.join(__dirname, '../../skills/plain-speak/SKILL.md'));
 });
+
+test('plain-speak skill documents session-wide teaching mode', () => {
+  const content = fs.readFileSync(path.join(__dirname, '../../skills/plain-speak/SKILL.md'), 'utf8');
+  assert.match(content, /GLOSSARY\.md/, 'must document glossary tracking');
+  assert.match(content, /whole session/, 'must document session-wide scope');
+});
