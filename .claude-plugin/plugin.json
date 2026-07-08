@@ -5,6 +5,5 @@
   "author": {
     "name": "OctaCoreWasTaken",
     "url": "https://github.com/OctaCoreWasTaken"
-  },
-  "hooks": "./hooks/hooks.json"
+  }
 }
