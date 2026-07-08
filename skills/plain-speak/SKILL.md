@@ -1,6 +1,6 @@
 ---
 name: plain-speak
-description: Use when explaining domain-specific or technical concepts during brainstorming or planning to someone who may not have specialized background in that field. Keeps explanations jargon-free, short, and information-dense instead of long technical paragraphs.
+description: Use throughout the session to explain the codebase in plain language — mechanism, flow, and reasoning, not just during brainstorming or planning. Keeps explanations jargon-free, short, and information-dense instead of long technical paragraphs.
 ---
 
 # Plain-Speak
