@@ -11,7 +11,7 @@ auto_compact      = true      # block prompts once context usage crosses [contex
 stale_threshold = 10          # unread-change count before routing decisions to developer
 
 [context]
-context_max = 200000          # this session's total context window (tokens)
+context_max = 1000000         # this session's total context window (tokens)
 threshold   = 0.6             # fraction of context_max that triggers an auto-compact block
 
 [model]

@@ -22,6 +22,9 @@ test('returns defaults when truss.toml is missing', () => {
   assert.strictEqual(config.model.coding, 'haiku');
   assert.strictEqual(config.model.escalation, 'opus');
   assert.strictEqual(config.log.events, true);
+  assert.strictEqual(config.gates.auto_compact, true);
+  assert.strictEqual(config.context.context_max, 200000);
+  assert.strictEqual(config.context.threshold, 0.6);
   fs.rmSync(tmp, { recursive: true });
 });
 

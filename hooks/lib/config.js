@@ -2,10 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 const DEFAULTS = {
-  gates:   { read_before_write: true, failure_ledger: true, spec_gate: true },
+  gates:   { read_before_write: true, failure_ledger: true, spec_gate: true, auto_compact: true },
   routing: { stale_threshold: 10 },
   model:   { coordinator: 'sonnet', thinking: 'opus', coding: 'haiku', escalation: 'opus' },
   log:     { events: true },
+  context: { context_max: 200000, threshold: 0.6 },
 };
 
 function parseValue(raw) {

@@ -13,6 +13,17 @@
         ]
       }
     ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.js\" UserPromptSubmit",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "hooks": [
