@@ -2,6 +2,9 @@ const fs = require('fs');
 const { loadConfig } = require('../lib/config');
 
 function mostRecentUsage(transcriptPath) {
+  // ponytail: whole-file read, worst case at exactly the moment the transcript is
+  // largest (near-full context). Switch to a reverse-chunk scan if a multi-MB
+  // transcript ever measurably slows this down — not needed at current scale.
   const lines = fs.readFileSync(transcriptPath, 'utf8').split('\n').filter(Boolean);
   for (let i = lines.length - 1; i >= 0; i--) {
     let entry;
