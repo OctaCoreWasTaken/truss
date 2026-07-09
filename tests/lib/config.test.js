@@ -32,6 +32,13 @@ test('log.decisions defaults to true', () => {
   fs.rmSync(tmp, { recursive: true });
 });
 
+test('gates.plain_speak defaults to true', () => {
+  const tmp = makeTmp();
+  const { config } = loadConfig(tmp);
+  assert.strictEqual(config.gates.plain_speak, true);
+  fs.rmSync(tmp, { recursive: true });
+});
+
 test('returns warning and defaults when truss.toml has invalid section header', () => {
   const tmp = makeTmp();
   fs.writeFileSync(path.join(tmp, 'truss.toml'), '[gates\nauto_compact = false\n');

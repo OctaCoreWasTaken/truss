@@ -4,6 +4,7 @@
 [gates]
 failure_ledger    = true      # check failure ledger before edits
 auto_compact      = true      # block prompts once context usage crosses [context] threshold
+plain_speak       = true      # inject plain-speak teaching mode at session start
 
 [context]
 context_max = 200000          # this session's total context window (tokens)

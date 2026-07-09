@@ -57,3 +57,14 @@ test('uses truss-skills/plain-speak.md override when present, instead of the shi
   assert.strictEqual(result.additionalContext, 'Custom override body.');
   fs.rmSync(tmp, { recursive: true });
 });
+
+test('returns null when [gates] plain_speak is false', () => {
+  const tmp = makeTmp();
+  const pluginRoot = makePluginRoot(tmp, FIXTURE);
+  fs.writeFileSync(path.join(tmp, 'truss.toml'), '[gates]\nplain_speak = false\n');
+
+  const result = teach({}, tmp, pluginRoot);
+
+  assert.strictEqual(result, null);
+  fs.rmSync(tmp, { recursive: true });
+});
