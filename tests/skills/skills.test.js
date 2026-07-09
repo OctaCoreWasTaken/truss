@@ -33,6 +33,25 @@ test('research skill documents fan-out dispatch and confirm-step trace', () => {
   assert.match(content, /Confirmed with user/, 'must document the confirm-step trace format');
 });
 
+test('research skill documents the trigger red-flag table', () => {
+  const content = fs.readFileSync(path.join(__dirname, '../../skills/research/SKILL.md'), 'utf8');
+  assert.match(content, /already confident/, 'must document the red-flag table');
+  assert.match(content, /\| Thought \| Reality \|/, 'must document red-flag table framing');
+});
+
+test('research skill documents the decide-to-research step and config', () => {
+  const content = fs.readFileSync(path.join(__dirname, '../../skills/research/SKILL.md'), 'utf8');
+  assert.match(content, /\[research\]/, 'must document the [research] config section');
+  assert.match(content, /decide = "user"|decide` \(default `"user"`\)|decide.*default.*user/, 'must document the decide default');
+  assert.match(content, /AskUserQuestion/, 'must document the ask-first mechanism');
+});
+
+test('research skill documents capped iterative rounds with cap-reset', () => {
+  const content = fs.readFileSync(path.join(__dirname, '../../skills/research/SKILL.md'), 'utf8');
+  assert.match(content, /max_rounds/, 'must document the round cap config');
+  assert.match(content, /resets the round counter to 0/, 'must document cap-reset behavior');
+});
+
 test('big-brain skill documents truss-skills/big-brain.md override', () => {
   const content = fs.readFileSync(path.join(__dirname, '../../skills/big-brain/SKILL.md'), 'utf8');
   assert.match(content, /truss-skills\/big-brain\.md/, 'must document the override file path');
