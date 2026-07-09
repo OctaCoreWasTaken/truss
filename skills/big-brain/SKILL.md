@@ -23,6 +23,14 @@ Delegate the analysis to a subagent running the `thinking` model from `truss.tom
 
 Never delegate the conversation itself — only a self-contained analytical question. A subagent cannot talk to the user.
 
+After relaying the conclusion, append one line to `DECISIONS.log` (create the file if it doesn't exist yet — same lazy-creation pattern as `RESEARCH.md`):
+
+```
+YYYY-MM-DD HH:MM | big-brain | <one-line question> | verdict: <one-line conclusion>
+```
+
+This is the only record of whether a hard decision actually got delegated — without it, there's no way to check after the fact that this skill fired when it should have. Skip only if `truss.toml`'s `[log] decisions` is explicitly set to `false`.
+
 ## What to do (delegated subagent)
 
 Your job here is to **reason and decide**, not to re-research from scratch. Check `RESEARCH.md` first and work from what's already there. Only research a specific fact if it is genuinely missing and the decision hinges on it — research should be the exception in this role, not the default first move. Spend your effort on the analysis itself: comparing the options, finding the flaw, making the call.

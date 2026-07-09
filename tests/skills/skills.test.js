@@ -38,6 +38,12 @@ test('big-brain skill documents truss-skills/big-brain.md override', () => {
   assert.match(content, /truss-skills\/big-brain\.md/, 'must document the override file path');
 });
 
+test('big-brain skill documents DECISIONS.log trace', () => {
+  const content = fs.readFileSync(path.join(__dirname, '../../skills/big-brain/SKILL.md'), 'utf8');
+  assert.match(content, /DECISIONS\.log/, 'must document the decision log');
+  assert.match(content, /verdict:/, 'must document the log line format');
+});
+
 test('plain-speak skill has valid frontmatter', () => {
   assertValidFrontmatter(path.join(__dirname, '../../skills/plain-speak/SKILL.md'));
 });
