@@ -24,7 +24,7 @@ We build truss using truss. Three shipped skills, all overridable via `truss-ski
   decisions: <one line each, only if the brief was deviated from>
   blockers: <one line each, or "none">
   ```
-  Prose is still allowed below the schema block. Don't hard-code this to any one plugin's file path — the schema is a property of any subagent report, the artifact's location isn't. The `decisions` field also gets appended, one line per entry, to `DECISIONS.log` (`YYYY-MM-DD HH:MM | report | <decision>`) — this keeps the rule auditable even though truss doesn't own the report file itself.
+  Prose is still allowed below the schema block. Don't hard-code this to any one plugin's file path — the schema is a property of any subagent report, the artifact's location isn't. The `decisions` field also gets appended, one line per entry, to `DECISIONS.log` (`YYYY-MM-DD HH:MM | report | <decision>`) — this keeps the rule auditable even though truss doesn't own the report file itself. Skip only if `truss.toml`'s `[log] decisions` is explicitly set to `false` (same toggle `big-brain` honors).
 
 ## claude-mem (cross-session memory — automatic)
 Captures every Read/Edit/Bash as a compressed observation and auto-injects relevant ones into future sessions (starts on session 2, nothing to invoke). Complementary to truss's control-surface files, not a replacement — claude-mem is opaque/automatic recall; `STATE.md`/`CONVENTIONS.md`/`RESEARCH.md`/`GLOSSARY.md` stay the deliberate, git-committed, human-readable record.
