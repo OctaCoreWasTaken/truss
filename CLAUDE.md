@@ -14,7 +14,17 @@ We build truss using truss. Three shipped skills, all overridable via `truss-ski
 - **truss:big-brain** — delegate hard design/analysis to a `thinking` subagent during brainstorming/planning, before any plan exists. Delegate when such a decision appears; don't first argue whether it's hard enough. The subagent reasons from `RESEARCH.md`, doesn't re-research. (Note: `truss:model-routing` was dropped 2026-07-08 — Superpowers' own `subagent-driven-development` skill already covers model selection for plan-execution delegation in more detail; see `proposal.md` Component 8.)
 - **truss:plain-speak** — force-loaded every session (2026-07-08: widened from brainstorm/plan-only), not something you invoke. Acts as a teacher: explain the codebase's mechanism, flow, and reasoning in plain language — not jargon, not a shallow one-liner. Tracks taught terms in `GLOSSARY.md` so vocabulary compounds instead of re-teaching or dumping.
 - **Customize any skill's text**: create `truss-skills/<name>.md` (e.g. `truss-skills/plain-speak.md`) to fully replace the shipped instructions — durable across plugin reinstalls, unlike editing the plugin's own installed files directly. `plain-speak`'s override is hook-checked (deterministic); `research`/`big-brain`'s is instruction-based (same reliability as their normal invocation).
-- Truss files are the control surface: `STATE.md` (where we are), `RESEARCH.md` (what's known), `CONVENTIONS.md`, `GLOSSARY.md` (taught vocabulary), `EVENTS.log` (auto tool log), `truss.toml` (config). Read/update them, don't invent parallel scratch files.
+- Truss files are the control surface: `STATE.md` (where we are), `RESEARCH.md` (what's known), `CONVENTIONS.md`, `GLOSSARY.md` (taught vocabulary), `DECISIONS.log` (big-brain delegations + subagent report decisions, auditable), `EVENTS.log` (auto tool log), `truss.toml` (config). Read/update them, don't invent parallel scratch files.
+- **Subagent completion reports, any workflow:** whatever completion-report artifact the active development workflow produces (Superpowers' `subagent-driven-development` task reports, another plugin's equivalent, or a plain reply if none is active), it opens with a fixed schema before any free-form narrative:
+  ```
+  status: DONE | BLOCKED
+  commit: <hash>
+  files_changed: <list>
+  tests: <before X/Y pass> -> <after X/Y pass>
+  decisions: <one line each, only if the brief was deviated from>
+  blockers: <one line each, or "none">
+  ```
+  Prose is still allowed below the schema block. Don't hard-code this to any one plugin's file path — the schema is a property of any subagent report, the artifact's location isn't. The `decisions` field also gets appended, one line per entry, to `DECISIONS.log` (`YYYY-MM-DD HH:MM | report | <decision>`) — this keeps the rule auditable even though truss doesn't own the report file itself.
 
 ## claude-mem (cross-session memory — automatic)
 Captures every Read/Edit/Bash as a compressed observation and auto-injects relevant ones into future sessions (starts on session 2, nothing to invoke). Complementary to truss's control-surface files, not a replacement — claude-mem is opaque/automatic recall; `STATE.md`/`CONVENTIONS.md`/`RESEARCH.md`/`GLOSSARY.md` stay the deliberate, git-committed, human-readable record.
