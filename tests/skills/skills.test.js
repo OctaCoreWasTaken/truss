@@ -26,6 +26,13 @@ test('research skill documents truss-skills/research.md override', () => {
   assert.match(content, /truss-skills\/research\.md/, 'must document the override file path');
 });
 
+test('research skill documents fan-out dispatch and confirm-step trace', () => {
+  const content = fs.readFileSync(path.join(__dirname, '../../skills/research/SKILL.md'), 'utf8');
+  assert.match(content, /2\+ items/, 'must document the fan-out threshold');
+  assert.match(content, /one subagent per item/, 'must document per-item subagent dispatch');
+  assert.match(content, /Confirmed with user/, 'must document the confirm-step trace format');
+});
+
 test('big-brain skill documents truss-skills/big-brain.md override', () => {
   const content = fs.readFileSync(path.join(__dirname, '../../skills/big-brain/SKILL.md'), 'utf8');
   assert.match(content, /truss-skills\/big-brain\.md/, 'must document the override file path');

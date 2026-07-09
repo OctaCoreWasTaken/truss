@@ -24,7 +24,7 @@ Lazy-developer framing: finding a documented answer is cheaper than deriving one
 Full ritual below is for plans/specs. In plain chat, lighter version:
 
 - User asks "what's the current best way to do X" / names unfamiliar lib or API / you're about to assert a frontier or SOTA claim → search (context7 for libs/APIs, WebSearch/WebFetch for algorithms/frontier work) before answering.
-- Cite what you found, answer directly. No user confirm-list step — that ceremony is for plans, not one-off questions.
+- Cite what you found, answer directly. No user confirm-list step — that ceremony is for plans, not one-off questions. No fan-out either — a single lookup doesn't benefit from it.
 - Still log it (see step 4) if the finding could matter to a future decision. Skip logging only for trivial lookups (e.g. "what's the current npm version") with no forward value.
 - If the conversation turns into a plan the user wants to act on, switch to the full Steps below.
 - Skip this whole thing for routine debugging/local-code questions — no search value there.
@@ -32,10 +32,11 @@ Full ritual below is for plans/specs. In plain chat, lighter version:
 ## Steps
 
 1. **Check `RESEARCH.md` first.** Skip anything with a relevant, current entry — do not re-research it.
-2. **Compile the research list and confirm with the user.** List every external library, API, framework, algorithm, or unfamiliar pattern the plan touches that is not already covered. Show this list to the user and ask whether they want to add anything before you begin; incorporate their additions. This is a prompt-and-continue, not an approval gate. (Casual conversation skips this step — see above.)
+2. **Compile the research list and confirm with the user.** List every external library, API, framework, algorithm, or unfamiliar pattern the plan touches that is not already covered. Show this list to the user and ask whether they want to add anything before you begin; incorporate their additions. This is a prompt-and-continue, not an approval gate. (Casual conversation skips this step — see above.) Note whether the user added anything — this is recorded in each entry's `Confirmed with user` line in Step 4.
 3. **Research each item, routed by kind:**
    - **Library/API/framework docs** → context7 first (resolve the library, query its docs). Fall back to WebSearch / WebFetch for anything context7 does not cover.
    - **Algorithm/technique/prior-art** → context7 will not have this. Go straight to WebSearch/WebFetch for papers, surveys, and reference implementations. Look specifically for existing solutions to the same problem, not just background theory.
+   - **Fan-out when the confirmed list (Step 2) has 2+ items.** Spawn one subagent per item, in parallel (a single message, multiple `Agent` tool calls, `subagent_type: general-purpose`). Each subagent's prompt contains only: the one item, its kind (library/API vs. algorithm/prior-art, routing it per the rules above), and the exact entry format from Step 4 to return as its sole output — nothing else from the wider plan or conversation. Wait for all subagents to return, then write every returned entry into `RESEARCH.md` yourself, sequentially, in one pass — subagents never write the file directly, avoiding concurrent-write races on a shared file. A list of exactly 1 item stays inline — no subagent spawned, nothing to gain from fanning out a single item.
 4. **Record findings in `RESEARCH.md`, sorted into two sections.** Create the file if it does not exist, with both headers:
 
    ```
@@ -52,6 +53,7 @@ Full ritual below is for plans/specs. In plain chat, lighter version:
    Source confidence: primary (paper/official doc/spec) | secondary (blog/forum)
    Findings: <what was verified, in plain language>
    Used in: <the spec/plan file this informed, or "casual — <topic>" if outside a plan>
+   Confirmed with user: yes | additions: <none/list> (omit this line for casual-conversation entries — Step 2's confirm-list only happens in the full ritual)
 
    **`# Avoid`** — tried, considered, or found broken; kept so it isn't retried:
 
