@@ -2,10 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 const DEFAULTS = {
-  gates:   { failure_ledger: true, auto_compact: true, plain_speak: true },
-  model:   { coordinator: 'sonnet', thinking: 'opus', coding: 'haiku', escalation: 'opus' },
-  log:     { events: true, decisions: true },
-  context: { context_max: 200000, threshold: 0.6 },
+  gates:    { failure_ledger: true, auto_compact: true, plain_speak: true },
+  model:    { coordinator: 'sonnet', thinking: 'opus', coding: 'haiku', escalation: 'opus' },
+  log:      { events: true, decisions: true },
+  context:  { context_max: 200000, threshold: 0.6 },
+  research: { decide: 'user', max_rounds: 3 },
 };
 
 function parseValue(raw) {

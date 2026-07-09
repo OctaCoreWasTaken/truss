@@ -18,3 +18,7 @@ escalation  = "opus"          # stronger tier on failure (reserved for v1)
 
 [log]
 events = true                 # append every tool call to EVENTS.log
+
+[research]
+decide     = "user"           # who decides if research is needed: "user" | "claude"
+max_rounds = 3                # iterative research rounds before prompting user to continue

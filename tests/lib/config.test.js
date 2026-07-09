@@ -39,6 +39,29 @@ test('gates.plain_speak defaults to true', () => {
   fs.rmSync(tmp, { recursive: true });
 });
 
+test('research.decide defaults to "user"', () => {
+  const tmp = makeTmp();
+  const { config } = loadConfig(tmp);
+  assert.strictEqual(config.research.decide, 'user');
+  fs.rmSync(tmp, { recursive: true });
+});
+
+test('research.max_rounds defaults to 3', () => {
+  const tmp = makeTmp();
+  const { config } = loadConfig(tmp);
+  assert.strictEqual(config.research.max_rounds, 3);
+  fs.rmSync(tmp, { recursive: true });
+});
+
+test('research config can be overridden', () => {
+  const tmp = makeTmp();
+  fs.writeFileSync(path.join(tmp, 'truss.toml'), '[research]\ndecide = "claude"\nmax_rounds = 5\n');
+  const { config } = loadConfig(tmp);
+  assert.strictEqual(config.research.decide, 'claude');
+  assert.strictEqual(config.research.max_rounds, 5);
+  fs.rmSync(tmp, { recursive: true });
+});
+
 test('returns warning and defaults when truss.toml has invalid section header', () => {
   const tmp = makeTmp();
   fs.writeFileSync(path.join(tmp, 'truss.toml'), '[gates\nauto_compact = false\n');
