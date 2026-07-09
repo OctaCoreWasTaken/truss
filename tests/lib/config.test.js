@@ -25,6 +25,13 @@ test('returns defaults when truss.toml is missing', () => {
   fs.rmSync(tmp, { recursive: true });
 });
 
+test('log.decisions defaults to true', () => {
+  const tmp = makeTmp();
+  const { config } = loadConfig(tmp);
+  assert.strictEqual(config.log.decisions, true);
+  fs.rmSync(tmp, { recursive: true });
+});
+
 test('returns warning and defaults when truss.toml has invalid section header', () => {
   const tmp = makeTmp();
   fs.writeFileSync(path.join(tmp, 'truss.toml'), '[gates\nauto_compact = false\n');
