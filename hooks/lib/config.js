@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const DEFAULTS = {
-  gates:    { auto_compact: true, model_routing: true },
+  gates:    { auto_compact: true, model_routing: true, plain_speak: true },
   model:    { coordinator: 'sonnet', thinking: 'opus', coding: 'haiku', escalation: 'opus' },
   log:      { events: true, decisions: true },
   context:  { context_max: 200000, threshold: 0.6 },

@@ -19,6 +19,7 @@ test('returns defaults when truss.toml is missing', () => {
   assert.strictEqual(config.model.escalation, 'opus');
   assert.strictEqual(config.log.events, true);
   assert.strictEqual(config.gates.auto_compact, true);
+  assert.strictEqual(config.gates.plain_speak, true);
   assert.strictEqual(config.context.context_max, 200000);
   assert.strictEqual(config.context.threshold, 0.6);
   fs.rmSync(tmp, { recursive: true });
@@ -94,5 +95,13 @@ test('parses string and number values, overriding defaults', () => {
   assert.strictEqual(config.model.thinking, 'sonnet');
   assert.strictEqual(config.model.coding, 'haiku'); // default preserved
   assert.strictEqual(config.context.context_max, 500000);
+  fs.rmSync(tmp, { recursive: true });
+});
+
+test('gates.plain_speak can be overridden to false', () => {
+  const tmp = makeTmp();
+  fs.writeFileSync(path.join(tmp, 'truss.toml'), '[gates]\nplain_speak = false\n');
+  const { config } = loadConfig(tmp);
+  assert.strictEqual(config.gates.plain_speak, false);
   fs.rmSync(tmp, { recursive: true });
 });

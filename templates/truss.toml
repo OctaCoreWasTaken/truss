@@ -4,6 +4,7 @@
 [gates]
 auto_compact      = true      # block prompts once context usage crosses [context] threshold
 model_routing     = true      # block Agent dispatches that omit "model" (silently inherits the expensive session model)
+plain_speak       = true      # always jargon-free output + obligatory codebase-piece definitions
 
 [context]
 context_max = 200000          # this session's total context window (tokens)
