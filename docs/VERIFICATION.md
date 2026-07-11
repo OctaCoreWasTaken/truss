@@ -49,19 +49,26 @@ to `EVENTS.log`) if `truss.toml` is malformed.
 
 ## 5. plain-speak (SessionStart + UserPromptSubmit)
 
-**What it is:** injects one fixed rule every session and every turn — speak plainly, no jargon,
-and always define a specific codebase piece (file/function/class) the moment it comes up in
-discussion.
+**What it is:** two different injections, not one repeated rule (redesigned 2026-07-11, commit
+`7ef2cc7`, after the original single-sentence version failed twice). `SessionStart` gives the
+rich rule with before/after examples, once per session. `UserPromptSubmit` gives a short
+structured pre-response checklist every turn — an Attentive-Reasoning-Query-style just-in-time
+self-check ("did I name a file/function/class? did I define each? any jargon left?"), not a
+passive restatement. See `RESEARCH.md`'s ARQ entry for why this shape was chosen over repetition.
 
 **Check:** ask about a specific file/function mid-conversation, unprompted (don't ask for a
 definition directly — see if it's offered).
 **Expect:** the response is jargon-free and proactively defines the piece, not only when
 explicitly asked.
-**Status:** hook mechanism confirmed live (`node hooks/dispatch.js SessionStart` returns the rule
-text). **Compliance confirmed broken twice now** (2026-07-11 — first a response named five
-codebase pieces with zero definitions; then, during this very checklist run, `dispatch.js` was
-named three times before being defined). The hook fires reliably; the model does not reliably
-follow it. Re-check periodically — this is a known, recurring soft spot, not a fixed one.
+**Status:** hook mechanism confirmed live. **Compliance confirmed broken twice under the old
+single-sentence version** (2026-07-11 — first a response named five codebase pieces with zero
+definitions; then, during that same checklist run, `dispatch.js` was named three times before
+being defined). **After the ARQ redesign, first live re-check passed** (2026-07-11, fresh
+session, commit `7ef2cc7` confirmed loaded — a longer multi-file explanation of plain-speak
+itself defined every named file inline). One clean pass across one response is not proof this
+holds over a long conversation — the underlying instruction-drift research says degradation
+shows up over sustained length, not necessarily on the first try. Re-check again later in a
+longer thread before calling this reliably fixed.
 
 ## 6. truss:research (full ritual)
 
