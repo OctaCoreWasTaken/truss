@@ -22,7 +22,9 @@ threshold, so `/compact` happens before quality degrades, not at Claude Code's n
 **Check:** temporarily set `[context] threshold = 0.01` in `truss.toml`, send one prompt.
 **Expect:** prompt blocked, message references running `/compact`.
 **Cleanup:** revert `truss.toml` to its real threshold afterward.
-**Status:** not yet re-verified live this session.
+**Status:** confirmed working (2026-07-11, live — simulated against this session's real
+transcript with `threshold = 0.01`; blocked with the correct message and real usage number
+pulled from the transcript, config reverted after).
 
 ## 3. events-log
 
@@ -30,7 +32,8 @@ threshold, so `/compact` happens before quality degrades, not at Claude Code's n
 
 **Check:** run any tool call, tail `EVENTS.log`.
 **Expect:** a new line with `ts` and `event` fields.
-**Status:** not yet re-verified live this session.
+**Status:** confirmed working (2026-07-11 — `EVENTS.log` had a fresh `ToolUse`/`Bash` line
+seconds after the preceding tool call).
 
 ## 4. session-start/init
 
@@ -55,9 +58,10 @@ definition directly — see if it's offered).
 **Expect:** the response is jargon-free and proactively defines the piece, not only when
 explicitly asked.
 **Status:** hook mechanism confirmed live (`node hooks/dispatch.js SessionStart` returns the rule
-text). **Compliance already confirmed broken once** (2026-07-11 — a response named five codebase
-pieces with zero definitions). The hook fires; nothing forces the model to actually follow it.
-Re-check periodically, not just once — this is a known soft spot, not a fixed one.
+text). **Compliance confirmed broken twice now** (2026-07-11 — first a response named five
+codebase pieces with zero definitions; then, during this very checklist run, `dispatch.js` was
+named three times before being defined). The hook fires reliably; the model does not reliably
+follow it. Re-check periodically — this is a known, recurring soft spot, not a fixed one.
 
 ## 6. truss:research (full ritual)
 
@@ -96,7 +100,9 @@ down versus `general-purpose`.
 **Check:** dispatch one, instruct it in the prompt to try `Bash` or `Read`.
 **Expect:** it cannot — the tool isn't in its schema — and it reports that back rather than
 silently failing or hallucinating a result.
-**Status:** not yet re-verified live this session.
+**Status:** confirmed working (2026-07-11, live — dispatched `truss:truss-researcher` and asked
+it to attempt both; it reported both as "exists but not enabled in this context" and correctly
+identified only `WebSearch`/`WebFetch` as available).
 
 ## 9. DECISIONS.log subagent-report schema
 
@@ -107,9 +113,10 @@ also gets appended, one line per entry, to `DECISIONS.log`.
 **Check:** run one real subagent-driven-development task that deviates from its brief.
 **Expect:** the report's `decisions` field is populated, and a matching line is appended to
 `DECISIONS.log`.
-**Status:** not yet re-verified live this session (previously exercised via `truss:big-brain`,
-which has since been removed — this now needs a fresh check against a plain subagent report,
-not a big-brain delegation).
+**Status:** not checkable within a single conversation without manufacturing an artificial task —
+needs a real subagent-driven-development task that genuinely deviates from its brief, not a
+throwaway one built just to tick this box. Previously exercised via `truss:big-brain` (now
+removed); next real occasion this fires, confirm the line lands in `DECISIONS.log`.
 
 ## 10. research decide-gate sequencing (regression check for the 2026-07-11 fix)
 
@@ -121,5 +128,6 @@ must ask the user after every round, not just at `max_rounds`.
 **Expect:** the decide-gate ask fires without being judged away first.
 **Check B:** trigger a 2+-item research fan-out on a separate topic.
 **Expect B:** after round 1, a direct "satisfied or continue?" ask — not silence until the cap.
-**Status:** fix just shipped, not yet observed working live. This is the most important item to
-re-check next, since the whole point of this fix was proven-broken compliance.
+**Status:** not checkable within this conversation — the fix only governs the *start* of a
+brainstorming session, and this session is already well past that point. Genuinely needs a fresh
+session. **First thing to check next time.**
