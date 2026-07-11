@@ -19,7 +19,7 @@ This list is illustrative, not exhaustive. **Delegate unconditionally when a dec
 
 ## What to do (coordinator)
 
-Delegate the analysis to a subagent running the `thinking` model from `truss.toml [model]` (default `opus`). Give it the concrete question and enough context to reason about it in isolation, then relay its conclusion back into the conversation.
+Delegate the analysis to a subagent with `subagent_type: truss-thinker`, running the `thinking` model from `truss.toml [model]` (default `opus`). `truss-thinker` is scoped to Read/Grep/Glob/WebSearch/WebFetch — no Bash/Edit/Write/Agent tool schemas loaded — which keeps fixed per-agent overhead down; do not fall back to `general-purpose`, it carries tools this role never uses. Give it the concrete question and enough context to reason about it in isolation, then relay its conclusion back into the conversation.
 
 Never delegate the conversation itself — only a self-contained analytical question. A subagent cannot talk to the user.
 

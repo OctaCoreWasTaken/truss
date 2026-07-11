@@ -13,7 +13,6 @@ test('returns defaults when truss.toml is missing', () => {
   const tmp = makeTmp();
   const { config, warning } = loadConfig(tmp);
   assert.strictEqual(warning, null);
-  assert.strictEqual(config.gates.failure_ledger, true);
   assert.strictEqual(config.model.coordinator, 'sonnet');
   assert.strictEqual(config.model.thinking, 'opus');
   assert.strictEqual(config.model.coding, 'haiku');
@@ -70,7 +69,7 @@ test('overrides specific values while keeping defaults for the rest', () => {
   const { config, warning } = loadConfig(tmp);
   assert.strictEqual(warning, null);
   assert.strictEqual(config.gates.auto_compact, false);
-  assert.strictEqual(config.gates.failure_ledger, true); // default preserved
+  assert.strictEqual(config.gates.model_routing, true); // default preserved
   fs.rmSync(tmp, { recursive: true });
 });
 
