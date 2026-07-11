@@ -18,7 +18,7 @@ node "${CLAUDE_PLUGIN_ROOT}/scripts/reset.js"
 ```
 
 The script, not this skill, is the source of truth for exactly what gets touched — see `scripts/reset.js`. It:
-- Deletes `RESEARCH.md` and `DECISIONS.log` (both lazily recreated by `truss:research` / `truss:big-brain` the next time they're needed)
+- Deletes `RESEARCH.md` and `DECISIONS.log` (`RESEARCH.md` lazily recreated by `truss:research`, `DECISIONS.log` by the next subagent report that logs a decision)
 - Overwrites `truss.toml` and `CONVENTIONS.md` with their template defaults
 - Leaves `EVENTS.log` untouched
 

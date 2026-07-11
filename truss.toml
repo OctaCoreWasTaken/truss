@@ -18,7 +18,7 @@ escalation  = "opus"          # stronger tier on failure (reserved for v1)
 
 [log]
 events    = true              # append every tool call to EVENTS.log
-decisions = true              # append big-brain delegations and report decisions to DECISIONS.log
+decisions = true              # append subagent report decisions to DECISIONS.log
 
 [research]
 decide     = "user"           # who decides if research is needed: "user" | "claude"

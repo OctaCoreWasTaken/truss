@@ -9,11 +9,11 @@
 - Never rewrite whole files — modify existing code, minimal diffs
 
 ## Truss (dependable coworker — dogfood it)
-We build truss using truss. Two shipped skills, all overridable via `truss-skills/<name>.md` (see below):
+We build truss using truss. One shipped skill, overridable via `truss-skills/<name>.md` (see below):
 - **truss:research** — during brainstorm/plan, research every external lib/API/pattern the work touches. Compile the list, let me add to it, then research (context7 first, WebSearch fallback). Append findings to `RESEARCH.md`. Don't trust your own confidence — research anyway.
-- **truss:big-brain** — delegate hard design/analysis to a `thinking` subagent during brainstorming/planning, before any plan exists. Delegate when such a decision appears; don't first argue whether it's hard enough. The subagent reasons from `RESEARCH.md`, doesn't re-research. (Note: `truss:model-routing` was dropped 2026-07-08 — Superpowers' own `subagent-driven-development` skill already covers model selection for plan-execution delegation in more detail; see `proposal.md` Component 8.)
+- (Note: `truss:big-brain` was dropped 2026-07-11 — rarely used, opus-tier subagent cost per delegation outweighed its low usage rate in practice. `truss:model-routing` was dropped 2026-07-08 — Superpowers' own `subagent-driven-development` skill already covers model selection for plan-execution delegation in more detail; see `proposal.md` Component 8.)
 - **Customize any skill's text**: create `truss-skills/<name>.md` (e.g. `truss-skills/research.md`) to fully replace the shipped instructions — durable across plugin reinstalls, unlike editing the plugin's own installed files directly. Override is instruction-based (same reliability as normal invocation).
-- Truss files are the control surface: `RESEARCH.md` (what's known), `CONVENTIONS.md`, `DECISIONS.log` (big-brain delegations + subagent report decisions, auditable), `EVENTS.log` (auto tool log), `truss.toml` (config). Read/update them, don't invent parallel scratch files.
+- Truss files are the control surface: `RESEARCH.md` (what's known), `CONVENTIONS.md`, `DECISIONS.log` (subagent report decisions, auditable), `EVENTS.log` (auto tool log), `truss.toml` (config). Read/update them, don't invent parallel scratch files.
 - **Subagent completion reports, any workflow:** whatever completion-report artifact the active development workflow produces (Superpowers' `subagent-driven-development` task reports, another plugin's equivalent, or a plain reply if none is active), it opens with a fixed schema before any free-form narrative:
   ```
   status: DONE | BLOCKED
@@ -23,7 +23,7 @@ We build truss using truss. Two shipped skills, all overridable via `truss-skill
   decisions: <one line each, only if the brief was deviated from>
   blockers: <one line each, or "none">
   ```
-  Prose is still allowed below the schema block. Don't hard-code this to any one plugin's file path — the schema is a property of any subagent report, the artifact's location isn't. The `decisions` field also gets appended, one line per entry, to `DECISIONS.log` (`YYYY-MM-DD HH:MM | report | <decision>`) — this keeps the rule auditable even though truss doesn't own the report file itself. Skip only if `truss.toml`'s `[log] decisions` is explicitly set to `false` (same toggle `big-brain` honors).
+  Prose is still allowed below the schema block. Don't hard-code this to any one plugin's file path — the schema is a property of any subagent report, the artifact's location isn't. The `decisions` field also gets appended, one line per entry, to `DECISIONS.log` (`YYYY-MM-DD HH:MM | report | <decision>`) — this keeps the rule auditable even though truss doesn't own the report file itself. Skip only if `truss.toml`'s `[log] decisions` is explicitly set to `false`.
 
 ## claude-mem (cross-session memory — automatic)
 Captures every Read/Edit/Bash as a compressed observation and auto-injects relevant ones into future sessions (starts on session 2, nothing to invoke). Complementary to truss's control-surface files, not a replacement — claude-mem is opaque/automatic recall; `CONVENTIONS.md`/`RESEARCH.md` stay the deliberate, git-committed, human-readable record.
