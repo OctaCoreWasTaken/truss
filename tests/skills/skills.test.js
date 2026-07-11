@@ -62,3 +62,12 @@ test('big-brain skill documents DECISIONS.log trace', () => {
   assert.match(content, /DECISIONS\.log/, 'must document the decision log');
   assert.match(content, /verdict:/, 'must document the log line format');
 });
+
+test('reset skill has valid frontmatter', () => {
+  assertValidFrontmatter(path.join(__dirname, '../../skills/reset/SKILL.md'));
+});
+
+test('reset skill documents truss-skills/reset.md override', () => {
+  const content = fs.readFileSync(path.join(__dirname, '../../skills/reset/SKILL.md'), 'utf8');
+  assert.match(content, /truss-skills\/reset\.md/, 'must document the override file path');
+});
