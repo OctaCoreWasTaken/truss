@@ -9,13 +9,15 @@ function makeTmp() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'truss-test-'));
 }
 
-test('returns additionalContext with the rule text by default', () => {
+test('returns additionalContext with the rich rule and examples by default', () => {
   const tmp = makeTmp();
 
   const result = plainSpeak({}, tmp);
 
   assert.ok(result.additionalContext.includes('plain, jargon-free language'));
-  assert.ok(result.additionalContext.includes('obligatory, not situational'));
+  assert.ok(result.additionalContext.includes('Obligatory'));
+  assert.ok(result.additionalContext.includes('Not:'), 'must include a before/after example');
+  assert.ok(result.additionalContext.includes('Yes:'), 'must include a before/after example');
   fs.rmSync(tmp, { recursive: true });
 });
 

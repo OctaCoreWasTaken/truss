@@ -9,13 +9,13 @@ function makeTmp() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'truss-test-'));
 }
 
-test('returns additionalContext with the rule text by default', () => {
+test('returns additionalContext with the ARQ-style pre-response checklist by default', () => {
   const tmp = makeTmp();
 
   const result = plainSpeak({}, tmp);
 
-  assert.ok(result.additionalContext.includes('plain, jargon-free language'));
-  assert.ok(result.additionalContext.includes('obligatory, not situational'));
+  assert.ok(result.additionalContext.includes('Before finalizing this response'));
+  assert.ok(result.additionalContext.includes('check silently'));
   fs.rmSync(tmp, { recursive: true });
 });
 
