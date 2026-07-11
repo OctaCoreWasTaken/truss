@@ -45,7 +45,19 @@ test('research skill documents the decide-to-research step and config', () => {
 test('research skill documents capped iterative rounds with cap-reset', () => {
   const content = fs.readFileSync(path.join(__dirname, '../../skills/research/SKILL.md'), 'utf8');
   assert.match(content, /max_rounds/, 'must document the round cap config');
-  assert.match(content, /resets the round counter to 0/, 'must document cap-reset behavior');
+  assert.match(content, /reset the counter and continue/, 'must document cap-reset behavior');
+});
+
+test('research skill documents mandatory ask-every-round (not just at cap)', () => {
+  const content = fs.readFileSync(path.join(__dirname, '../../skills/research/SKILL.md'), 'utf8');
+  assert.match(content, /After every round, ask the user — never decide silently/, 'must document the per-round ask');
+  assert.match(content, /not only once `max_rounds` is reached/, 'must document this fires before the cap too');
+});
+
+test('research skill documents mandatory sequencing after brainstorming Step 1', () => {
+  const content = fs.readFileSync(path.join(__dirname, '../../skills/research/SKILL.md'), 'utf8');
+  assert.match(content, /Sequencing is not optional/, 'must document the sequencing rule');
+  assert.match(content, /brainstorming.*Step 1/, 'must reference brainstorming Step 1 explicitly');
 });
 
 test('reset skill has valid frontmatter', () => {

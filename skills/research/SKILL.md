@@ -13,6 +13,8 @@ Before following the rules below, check `truss-skills/research.md` in the projec
 
 If there is even a 1% chance a brainstorming or planning session has started, this skill applies. Do not wait to feel unsure before checking — noticing the moment is the trigger, not a reason to evaluate whether it qualifies.
 
+**Sequencing is not optional.** Step 2's ask is the very next act after `brainstorming`'s own Step 1 (context exploration) — every single brainstorming or planning session, even one that feels self-contained. Deciding privately that "this one doesn't need it" and skipping straight past the ask is the exact failure this skill exists to catch; it has already happened once in practice (a design session with no external dependency went through without the ask ever firing). There is no hook that can force this — Claude Code has no event for "a skill was invoked" — so this is a compliance rule, not a gate. Treat noticing "a brainstorming session just started" as the trigger for the ask itself, not for a judgment call about whether to make it.
+
 | Thought | Reality |
 |---|---|
 | "I'm already confident about this" | Confidence is exactly what fails — that's the rule, not an exception to it. |
@@ -82,10 +84,12 @@ Full ritual below is for plans/specs. In plain chat, lighter version:
    Why avoid: <deprecated, doesn't work, wrong fit, superseded by X, etc.>
    Found while researching: <the item/plan this came up during>
 
-6. **Decide whether another round is needed.** After a round returns, check the findings against the original list from Step 3 — did anything surface a genuinely new unknown worth researching, or is the list covered? If covered, stop; the research is done for this task.
+6. **After every round, ask the user — never decide silently.** Once a round's findings are written to `RESEARCH.md`, report what was found and ask directly: "Satisfied with this research, or should I keep going?" This fires after each and every round, not only once `max_rounds` is reached — a self-judged "the list is covered, no need to ask" is the same silent-decision failure this skill exists to prevent, applied to round-continuation instead of the initial decide-gate.
 
-   If another round is warranted, check the round counter against `truss.toml`'s `[research] max_rounds` (default `3`):
-   - Under the cap: increment the counter, go back to Step 3 for the new items, continue.
-   - At the cap: do not silently stop. Ask the user: "Research cap reached (`max_rounds`) — continue researching, or proceed with what's gathered?" Yes resets the round counter to 0 and continues from Step 3. No proceeds with what's already in `RESEARCH.md`.
+   - User says satisfied / proceed: stop, fold findings into the plan.
+   - User says continue, and a genuinely new unknown surfaced: check the round counter against `truss.toml`'s `[research] max_rounds` (default `3`):
+     - Under the cap: increment the counter, go back to Step 3 for the new items.
+     - At the cap: say so explicitly — "Research cap reached (`max_rounds`)" — and ask again whether to reset the counter and continue, or proceed with what's gathered.
+   - User says continue, but nothing new to research (the list from Step 3 is already covered): say so plainly rather than fabricating an item to research, and ask how they'd like to proceed.
 
 Fold the verified facts into the plan as you build it. Check `# Avoid` before proposing an approach — don't re-suggest something already ruled out.

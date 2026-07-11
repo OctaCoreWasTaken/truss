@@ -1,7 +1,7 @@
 # Workflow Rules
 
 ## Core loop
-- Before any new feature: run /brainstorming first
+- Before any new feature: run /brainstorming first, and immediately follow its first step with truss:research's decide-gate ("does this need research?") — every session, no exceptions, even when the topic looks self-contained. This has been skipped in practice before; it is not optional judgment.
 - Use context7 automatically for any external library/API
 - Implement via superpowers:subagent-driven-development (fresh subagent per task, review between tasks), not full rewrites
 - Follow TDD: write failing test first, then implement
