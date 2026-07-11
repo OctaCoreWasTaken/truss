@@ -35,6 +35,12 @@ test('research skill documents the trigger red-flag table', () => {
   assert.match(content, /\| Thought \| Reality \|/, 'must document red-flag table framing');
 });
 
+test('research skill documents re-triggering mid-brainstorm, not just at kickoff', () => {
+  const content = fs.readFileSync(path.join(__dirname, '../../skills/research/SKILL.md'), 'utf8');
+  assert.match(content, /Not a one-time gate/, 'must document that the trigger recurs mid-session');
+  assert.match(content, /Re-run this skill right then, for that one item/, 'must document the re-run instruction');
+});
+
 test('research skill documents the decide-to-research step and config', () => {
   const content = fs.readFileSync(path.join(__dirname, '../../skills/research/SKILL.md'), 'utf8');
   assert.match(content, /\[research\]/, 'must document the [research] config section');

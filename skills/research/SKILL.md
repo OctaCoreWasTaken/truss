@@ -15,6 +15,8 @@ If there is even a 1% chance a brainstorming or planning session has started, th
 
 **Sequencing is not optional.** Step 2's ask is the very next act after `brainstorming`'s own Step 1 (context exploration) — every single brainstorming or planning session, even one that feels self-contained. Deciding privately that "this one doesn't need it" and skipping straight past the ask is the exact failure this skill exists to catch; it has already happened once in practice (a design session with no external dependency went through without the ask ever firing). There is no hook that can force this — Claude Code has no event for "a skill was invoked" — so this is a compliance rule, not a gate. Treat noticing "a brainstorming session just started" as the trigger for the ask itself, not for a judgment call about whether to make it.
 
+**Not a one-time gate.** The kickoff ask covers what's known to be needed at the start — it does not cover what surfaces later. A brainstorming session routinely evolves (a design pivots, a new tool gets named, a decision turns out to hinge on how some library actually works) — any point where a genuinely new external unknown appears mid-session is its own fresh trigger, not something deferred to "should've asked at the start." Re-run this skill right then, for that one item — casual-conversation weight (single lookup, no confirm-list ceremony) is enough if it's one item; fold it into the existing ritual (Step 3 onward) if a full research round is already in progress for other items. Don't wait for a natural stopping point to raise it.
+
 | Thought | Reality |
 |---|---|
 | "I'm already confident about this" | Confidence is exactly what fails — that's the rule, not an exception to it. |
