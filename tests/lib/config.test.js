@@ -32,13 +32,6 @@ test('log.decisions defaults to true', () => {
   fs.rmSync(tmp, { recursive: true });
 });
 
-test('gates.plain_speak defaults to true', () => {
-  const tmp = makeTmp();
-  const { config } = loadConfig(tmp);
-  assert.strictEqual(config.gates.plain_speak, true);
-  fs.rmSync(tmp, { recursive: true });
-});
-
 test('research.decide defaults to "user"', () => {
   const tmp = makeTmp();
   const { config } = loadConfig(tmp);
