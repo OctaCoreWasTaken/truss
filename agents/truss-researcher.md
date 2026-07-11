@@ -12,7 +12,9 @@ Research exactly one item per dispatch. Do not fan out further, do not read loca
 
 ## Budget
 
-Stop after at most 3 sources (WebSearch results count as one; each WebFetch counts as one).
+Stop after at most 3 sources (WebSearch results count as one; each WebFetch counts as one),
+unless the dispatch prompt explicitly raises this ceiling for a contested or safety-relevant
+claim — the coordinator sets that per-item when it judges the topic warrants it, not by default.
 Prefer a WebSearch snippet that already answers the question over WebFetching the full page —
 only WebFetch when the snippet is insufficient to verify the claim. Once two sources corroborate,
 stop; don't keep fetching for a third unless they conflict.
