@@ -14,23 +14,9 @@ function makePluginRoot(tmp) {
   const templatesDir = path.join(pluginRoot, 'templates');
   fs.mkdirSync(templatesDir, { recursive: true });
   fs.writeFileSync(path.join(templatesDir, 'truss.toml'), '[log]\nevents = true\n');
-  fs.writeFileSync(path.join(templatesDir, 'STATE.md'), '# State\n');
   fs.writeFileSync(path.join(templatesDir, 'CONVENTIONS.md'), '# Conventions\n');
   return pluginRoot;
 }
-
-test('creates STATE.md from template when missing', () => {
-  const tmp = makeTmp();
-  const project = path.join(tmp, 'project');
-  fs.mkdirSync(project);
-  const pluginRoot = makePluginRoot(tmp);
-
-  init({}, project, pluginRoot);
-
-  assert.ok(fs.existsSync(path.join(project, 'STATE.md')));
-  assert.strictEqual(fs.readFileSync(path.join(project, 'STATE.md'), 'utf8'), '# State\n');
-  fs.rmSync(tmp, { recursive: true });
-});
 
 test('creates CONVENTIONS.md from template when missing', () => {
   const tmp = makeTmp();
@@ -53,22 +39,6 @@ test('creates truss.toml from template when missing', () => {
   init({}, project, pluginRoot);
 
   assert.ok(fs.existsSync(path.join(project, 'truss.toml')));
-  fs.rmSync(tmp, { recursive: true });
-});
-
-test('does not overwrite existing STATE.md', () => {
-  const tmp = makeTmp();
-  const project = path.join(tmp, 'project');
-  fs.mkdirSync(project);
-  const pluginRoot = makePluginRoot(tmp);
-  fs.writeFileSync(path.join(project, 'STATE.md'), '# My existing state\n');
-
-  init({}, project, pluginRoot);
-
-  assert.strictEqual(
-    fs.readFileSync(path.join(project, 'STATE.md'), 'utf8'),
-    '# My existing state\n'
-  );
   fs.rmSync(tmp, { recursive: true });
 });
 

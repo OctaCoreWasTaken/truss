@@ -4,7 +4,7 @@ const { loadConfig } = require('../lib/config');
 
 const DEFAULT_PLUGIN_ROOT = path.resolve(__dirname, '../..');
 
-const TEMPLATES = ['truss.toml', 'STATE.md', 'CONVENTIONS.md'];
+const TEMPLATES = ['truss.toml', 'CONVENTIONS.md'];
 
 function createMissingFiles(projectRoot, pluginRoot) {
   for (const filename of TEMPLATES) {
