@@ -1,0 +1,1 @@
+module.exports = '[truss] Always speak in plain, jargon-free language — in every response, not only when discussing code. When a specific codebase piece (a file, function, or class) comes up in discussion, always give a short plain-language definition of what it is and does, generated fresh from the current code — this is obligatory, not situational.';
