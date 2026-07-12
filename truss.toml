@@ -8,7 +8,7 @@ plain_speak       = true      # always jargon-free output + obligatory codebase-
 
 [context]
 context_max = 1000000         # this session's total context window (tokens)
-threshold   = 0.6             # fraction of context_max that triggers an auto-compact block
+threshold   = 0.25             # fraction of context_max that triggers an auto-compact block (0.25 * 1000000 = 250,000 tokens)
 
 [model]
 coordinator = "sonnet"        # advisory: intended session model (truss can't set it)

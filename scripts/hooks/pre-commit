@@ -1,0 +1,6 @@
+#!/bin/sh
+# truss — auto-bump version on every commit so `claude plugin update` (semver-based)
+# never again silently reports "already latest" while real commits pile up unbumped.
+node "$(git rev-parse --show-toplevel)/scripts/bump-version.js" || exit 0
+git add package.json .claude-plugin/plugin.json .claude-plugin/marketplace.json plugin.json 2>/dev/null
+exit 0
